@@ -81,3 +81,4 @@ class Agent:
         target_full = self.model.predict1(self._sa[0])
         target_full[0, self._sa[1]] = target
         self.model.partial_fit1(self._sa[0], target_full)
+        return rs[0]
