@@ -15,9 +15,7 @@ class Environment:
     def initialize(self):
         self.rng.shuffle(self.pile)
         self.p = self.rule.sets * 3 + 2
-        self._state = [0 for _ in self.rule._distinct_tiles]
-        for i in range(self.p):
-            self._state[self.rule._distinct_tiles_index[self.pile[i]]] += 1
+        self._state = self.rule.hand_to_state(self.pile[:self.p])
         self.in_play = True
 
     def state(self):
@@ -27,16 +25,13 @@ class Environment:
     def transition(self, action):
         if action == -1: # hu
             self.in_play = False
-            return 1
+            return (1, None)
         if self._state[action]:
             self._state[action] -= 1
             if self.p == len(self.pile):
-                return 0
+                return (0, None)
             self._state[self.rule._distinct_tiles_index[self.pile[self.p]]] += 1
             self.p += 1
-            return 0
+            return (0, self.state())
         self.in_play = False
-        return -1
-
-    def n_actions(self):
-        return len(self.rule._distinct_tiles)
+        return (-1, None)

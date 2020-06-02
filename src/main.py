@@ -6,8 +6,9 @@ import logging
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
 def main(n_episodes):
-    environment = Environment(Rule(), seed=20200602)
-    agent = random_agent(environment.n_actions, seed=20201031)
+    rule = Rule()
+    environment = Environment(rule, seed=20200602)
+    agent = random_agent(rule, seed=20201031)
     for i in range(n_episodes):
         environment.initialize()
         while environment.in_play:

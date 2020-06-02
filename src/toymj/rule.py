@@ -25,7 +25,27 @@ class Rule:
         return list(itertools.chain.from_iterable(
                 map(get_suit, enumerate(self.suits))))
 
-    def state_to_hand(self, hand):
+    def state_to_hand(self, state):
         return list(itertools.chain.from_iterable(
                 itertools.repeat(self._distinct_tiles[i], n)
-                for (i, n) in enumerate(hand)))
+                for (i, n) in enumerate(state)))
+
+    def hand_to_state(self, hand):
+        ret = [0 for _ in range(self.dim_state())]
+        for tile in hand:
+            ret[self._distinct_tiles_index[tile]] += 1
+        return ret
+
+    def dim_state(self):
+        return len(self._distinct_tiles)
+
+    def n_actions(self):
+        return self.dim_state() + 1
+
+    def random_states(self, n, rng):
+        pile = self.get_pile()
+        ret = []
+        for _ in range(n):
+            rng.shuffle(pile)
+            ret.append(self.hand_to_state(pile[:self.sets*3+2]))
+        return ret
