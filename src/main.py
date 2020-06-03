@@ -1,12 +1,12 @@
 from toymj.agent import random_agent
 from toymj.environment import Environment
-from toymj.rule import Rule
+from toymj.rule import Rule, Suit
 
 import logging
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
 def main(n_episodes):
-    rule = Rule()
+    rule = Rule(suits=[Suit(3, 3)])
     environment = Environment(rule, seed=20200602)
     agent = random_agent(rule, seed=20201031)
     for i in range(n_episodes):

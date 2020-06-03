@@ -25,10 +25,14 @@ class Environment:
     def transition(self, action):
         if action == -1: # hu
             self.in_play = False
-            return (1, None)
+            if self.rule.hu(self._state):
+                return (1, None)
+            else:
+                return (-1, None)
         if self._state[action]:
             self._state[action] -= 1
             if self.p == len(self.pile):
+                self.in_play = False
                 return (0, None)
             self._state[self.rule._distinct_tiles_index[self.pile[self.p]]] += 1
             self.p += 1
